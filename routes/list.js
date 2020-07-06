@@ -9,7 +9,7 @@ router.get('/list', async (req, res) => {
     res.send(tasks)
 })
 
-router.post('/task', jsonParser, (req, res) => {
+router.post('/task', jsonParser, async (req, res) => {
 
     const tasks = new Tasks({
         text: req.body.text,
@@ -18,7 +18,7 @@ router.post('/task', jsonParser, (req, res) => {
         date: req.body.date
     })
 
-    tasks.save(err => {
+    await tasks.save(err => {
         if (err) return console.log(err);
         res.send(tasks)
     })
