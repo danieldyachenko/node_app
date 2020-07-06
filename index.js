@@ -1,6 +1,6 @@
 const express = require("express")
 const mongoose = require("mongoose")
-const todoRoutes = require('./routes/todos')
+const todoRoutes = require('./routes/list')
 
 const PORT = process.env.PORT || 3000
 
@@ -11,7 +11,7 @@ app.use('/api', todoRoutes)
 const start = async () => {
     try {
         await mongoose.connect(
-            'mongodb://localhost:27017/todos',
+            'mongodb://localhost:27017/tasksList',
             {
                 useNewUrlParser: true,
                 useFindAndModify: false
