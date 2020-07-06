@@ -1,74 +1,30 @@
-const mongoose = require("mongoose");
-const express = require("express");
-const Schema = mongoose.Schema;
-const app = express();
-const jsonParser = express.json();
+const express = require("express")
+const mongoose = require("mongoose")
+const todoRoutes = require('./routes/todos')
 
-const userScheme = new Schema({name: String, age: Number}, {versionKey: false});
-const User = mongoose.model("User", userScheme);
+const PORT = process.env.PORT || 3000
 
-app.use(express.static(__dirname + "/public"));
+const app = express()
 
-mongoose.connect("mongodb://localhost:27017/usersdb", { useNewUrlParser: true }, function(err){
-    if(err) return console.log(err);
-    app.listen(3000, function(){
-        console.log("Сервер ожидает подключения...");
-    });
-});
+app.use('/api', todoRoutes)
 
-app.get("/api/users", function(req, res){
+const start = async () => {
+    try {
+        await mongoose.connect(
+            'mongodb://localhost:27017/todos',
+            {
+                useNewUrlParser: true,
+                useFindAndModify: false
+            }
+        )
 
-    User.find({}, function(err, users){
+        app.listen(PORT, () => {
+            console.log('Server has been started...')
+        })
 
-        if(err) return console.log(err);
-        res.send(users)
-    });
-});
+    } catch (err) {
+        console.log(err)
+    }
+}
 
-app.get("/api/users/:id", function(req, res){
-
-    const id = req.params.id;
-    User.findOne({_id: id}, function(err, user){
-
-        if(err) return console.log(err);
-        res.send(user);
-    });
-});
-
-app.post("/api/users", jsonParser, function (req, res) {
-
-    if(!req.body) return res.sendStatus(400);
-
-    const userName = req.body.name;
-    const userAge = req.body.age;
-    const user = new User({name: userName, age: userAge});
-
-    user.save(function(err){
-        if(err) return console.log(err);
-        res.send(user);
-    });
-});
-
-app.delete("/api/users/:id", function(req, res){
-
-    const id = req.params.id;
-    User.findByIdAndDelete(id, function(err, user){
-
-        if(err) return console.log(err);
-        res.send(user);
-    });
-});
-
-app.put("/api/users", jsonParser, function(req, res){
-
-    if(!req.body) return res.sendStatus(400);
-    const id = req.body.id;
-    const userName = req.body.name;
-    const userAge = req.body.age;
-    const newUser = {age: userAge, name: userName};
-
-    User.findOneAndUpdate({_id: id}, newUser, {new: true}, function(err, user){
-        if(err) return console.log(err);
-        res.send(user);
-    });
-});
+start()
