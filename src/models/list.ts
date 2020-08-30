@@ -1,4 +1,5 @@
-const {Schema, model} = require('mongoose')
+
+import {Schema, model} from 'mongoose'
 
 const TasksSchema = new Schema({
     text: {type: String, required: true},
@@ -7,4 +8,4 @@ const TasksSchema = new Schema({
     date: {type: String, required: true}
 })
 
-module.exports = model('Tasks', TasksSchema)
+export default model('Tasks', TasksSchema)

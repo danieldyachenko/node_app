@@ -1,15 +1,16 @@
-const {Router, json} = require('express')
-const Tasks = require('../models/list')
+import {Router, json} from 'express'
+import Tasks from './../models/list'
+import { Request, Response } from 'express'
 
-const router = Router()
+const router: Router = Router()
 const jsonParser = json();
 
-router.get('/list', async (req, res) => {
+router.get('/list', async (req: Request, res: Response) => {
     const tasks = await Tasks.find({})
     res.send(tasks)
 })
 
-router.post('/task', jsonParser, async (req, res) => {
+router.post('/task', jsonParser, async (req: Request, res: Response) => {
 
     const tasks = new Tasks({
         text: req.body.text,
@@ -24,4 +25,4 @@ router.post('/task', jsonParser, async (req, res) => {
     })
 })
 
-module.exports = router
+export default router
