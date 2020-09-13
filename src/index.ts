@@ -1,13 +1,13 @@
 import mongoose, { ConnectionOptions } from "mongoose"
 import express, {Express} from 'express'
-import todoRoutes from '../src/routes/list'
+import listRoutes from './routes/listRoute'
 
 const PORT: string | number = process.env.PORT || 3000
 const URIS: string = 'mongodb+srv://danieldyachenko:sv_Virus93@cluster0.a64g2.mongodb.net/taskList?retryWrites=true&w=majority'
 
 const app: Express = express()
 
-app.use('/api', todoRoutes)
+app.use('/api', listRoutes)
 
 const options: ConnectionOptions = {
     useUnifiedTopology: true,
