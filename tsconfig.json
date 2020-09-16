@@ -1,17 +1,18 @@
 {
-    "compilerOptions": {
-        "outDir": "build",
-        "target": "es6",
-        "module": "commonjs",
-        "sourceMap": true,
-        "rootDir": "src",
-        "esModuleInterop": true,
-        "strict": true
-    },
-    "include": [
-        "src/**/*.ts"
-    ],
-    "exclude": [
-        "node_modules"
-    ]
+  "compilerOptions": {
+      "outDir": "build",
+      "target": "es6",
+      "module": "commonjs", // Модульная система
+      "sourceMap": true, // Исходные карты
+      "rootDir": "src",
+      "esModuleInterop": true,
+      "strict": true,
+      "noImplicitAny": true, // Отмена любого типа
+  },
+  "include": [
+      "src/**/*.ts"
+  ],
+  "exclude": [
+      "node_modules"
+  ]
 }
