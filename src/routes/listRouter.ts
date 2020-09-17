@@ -7,6 +7,12 @@ const listController = new ListController()
 
 router.get('/list', listController.getList)
 
-router.post('/task', jsonParser, listController.addTasks)
+router.get('/list/:id', listController.getTask)
+
+router.post('/list', jsonParser, listController.addTask)
+
+router.delete('/list/:id', listController.deleteTask)
+
+router.put('/list', jsonParser, listController.updateTask)
 
 export default router

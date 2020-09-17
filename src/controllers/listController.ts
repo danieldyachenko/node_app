@@ -8,7 +8,14 @@ export default class ListController {
         res.send(tasks)
     }
 
-    async addTasks(req: Request, res: Response) {
+    getTask(req: Request, res: Response) {
+        Tasks.findOne({_id: req.params.id}, (err, task) => {
+            if (err) console.log(err);
+            res.send(task);
+        });
+    }
+
+    async addTask(req: Request, res: Response) {
         const tasks = new Tasks({
             text: req.body.text,
             isPerformed: req.body.isPerformed,
@@ -19,6 +26,28 @@ export default class ListController {
         await tasks.save(err => {
             if (err) console.log(err);
             res.send(tasks)
+        })
+    }
+    
+    deleteTask(req: Request, res: Response) {
+        const id = req.params.id
+        Tasks.findByIdAndDelete(id, (err, tasks) => {
+            if (err) console.log(err)
+            res.send(tasks)
+        })
+    }
+    
+    updateTask(req: Request, res: Response) {
+        if (!req.body) return res.sendStatus(400)
+        const newTask = {
+            text: req.body.text,
+            isPerformed: req.body.isPerformed,
+            isTagged: req.body.isTagged,
+            date: req.body.date
+        }
+        Tasks.findByIdAndUpdate(req.body.id, newTask, {new: true}, (err, task) => {
+            if (err) console.log(err);
+            res.send(task);
         })
     }
 }

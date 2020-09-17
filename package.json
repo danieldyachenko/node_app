@@ -6,8 +6,7 @@
   "scripts": {
     "start": "ts-node-dev src/index.ts",
     "run:dev": "nodemon build/index.js",
-    "build": "webpack",
-    "tsc": "tsc"
+    "build": "webpack"
   },
   "keywords": [],
   "author": "",

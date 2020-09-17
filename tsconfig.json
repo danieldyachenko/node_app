@@ -1,18 +1,25 @@
 {
-  "compilerOptions": {
-      "outDir": "build",
-      "target": "es6",
-      "module": "commonjs", // Модульная система
-      "sourceMap": true, // Исходные карты
-      "rootDir": "src",
-      "esModuleInterop": true,
-      "strict": true,
-      "noImplicitAny": true, // Отмена любого типа
-  },
-  "include": [
-      "src/**/*.ts"
-  ],
-  "exclude": [
-      "node_modules"
-  ]
+    "compilerOptions": {
+        "outDir": "build", // Дириктория сборки
+        "target": "es6",
+        "module": "commonjs", // Модульная система
+        "sourceMap": true, // Исходные карты
+        "rootDir": "src", // Дириктория с кодом
+        "esModuleInterop": true,
+        "strict": true, // Строгий режим
+        "noImplicitAny": true, // Отмена любого типа
+        "allowSyntheticDefaultImports": true, // Разрешить импорты по умолчанию
+        "resolveJsonModule": true, // Позволяет импортировать модули с расширением «.json»
+        "allowJs": true, // Разрешить импортировать файлы JavaScript
+        "checkJs": true, // Ошибки сообщаются в файлах JavaScript
+        "removeComments": true, // Удаляет комментарии при преобразовании в JavaScript
+        "strictNullChecks": true, // строгая проверка null и undefined
+        "strictPropertyInitialization": true // Строгая инициализация свойства
+    },
+    "include": [
+        "src/**/*.ts"
+    ],
+    "exclude": [
+        "node_modules"
+    ]
 }

@@ -1,6 +1,6 @@
 import mongoose, { ConnectionOptions } from "mongoose"
 import express, {Express} from 'express'
-import listRoutes from './routes/listRoute'
+import listRoutes from './routes/listRouter'
 
 const PORT: string | number = process.env.PORT || 3000
 const URIS: string = 'mongodb+srv://danieldyachenko:sv_Virus93@cluster0.a64g2.mongodb.net/taskList?retryWrites=true&w=majority'
