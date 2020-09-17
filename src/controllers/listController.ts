@@ -1,22 +1,22 @@
 import Tasks from '../models/listModel'
 import { Request, Response } from 'express'
-import { Task } from '../types/list';
+import { Controller, Task } from '../types/list';
 
 export default class ListController {
 
-    async getList(req: Request, res: Response) {
+    getList: Controller = async (req, res) => {
         const tasks = await Tasks.find()
         res.send(tasks)
     }
 
-    getTask(req: Request, res: Response) {
+    getTask: Controller = (req, res) => {
         Tasks.findOne({_id: req.params.id}, (err, task) => {
             if (err) console.log(err);
             res.send(task);
         });
     }
 
-    async addTask(req: Request, res: Response) {
+    addTask: Controller = async (req, res) => {
         const tasks = new Tasks({
             text: req.body.text,
             isPerformed: req.body.isPerformed,
@@ -30,7 +30,7 @@ export default class ListController {
         })
     }
     
-    deleteTask(req: Request, res: Response) {
+    deleteTask: Controller = (req, res) => {
         const id = req.params.id
         Tasks.findByIdAndDelete(id, (err, tasks) => {
             if (err) console.log(err)
@@ -38,7 +38,7 @@ export default class ListController {
         })
     }
     
-    updateTask(req: Request, res: Response) {
+    updateTask: Controller = (req, res) => {
         if (!req.body) return res.sendStatus(400)
         const newTask: Task = {
             text: req.body.text,
