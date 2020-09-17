@@ -1,4 +1,5 @@
 import { Request, Response } from 'express'
+import {Model, model, Document} from 'mongoose'
 
 export type Task = {
     text: string,
@@ -8,3 +9,7 @@ export type Task = {
 }
 
 export type Controller = (req: Request, res: Response) => void
+
+export interface TaskModel extends Task, Document {
+    testMethod(): void
+}
