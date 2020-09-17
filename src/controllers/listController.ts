@@ -1,5 +1,6 @@
 import Tasks from '../models/listModel'
 import { Request, Response } from 'express'
+import { Task } from '../types/list';
 
 export default class ListController {
 
@@ -39,7 +40,7 @@ export default class ListController {
     
     updateTask(req: Request, res: Response) {
         if (!req.body) return res.sendStatus(400)
-        const newTask = {
+        const newTask: Task = {
             text: req.body.text,
             isPerformed: req.body.isPerformed,
             isTagged: req.body.isTagged,
