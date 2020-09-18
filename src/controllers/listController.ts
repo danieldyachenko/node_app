@@ -4,10 +4,6 @@ import { Controller, Task } from '../types/list';
 export default class ListController {
 
     getList: Controller = async (req, res) => {
-
-        const taskObj = new tasksModel()
-        console.log(taskObj)
-
         const tasks = await tasksModel.find()
         res.send(tasks)
     }
@@ -31,6 +27,9 @@ export default class ListController {
             if (err) console.log(err);
             res.send(tasks)
         })
+
+        //virtual property
+        console.log(tasks.universalDateFormat)
     }
     
     deleteTask: Controller = (req, res) => {

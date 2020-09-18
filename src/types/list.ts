@@ -11,5 +11,6 @@ export type Task = {
 export type Controller = (req: Request, res: Response) => void
 
 export interface TaskModel extends Task, Document {
-    testMethod(): void
+    getDate(): string
+    universalDateFormat: string
 }
