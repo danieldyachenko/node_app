@@ -17,10 +17,13 @@ TasksSchema.methods.getDate = function() {
 
 //Virtual
 TasksSchema.virtual('universalDateFormat').get(function(this: Task) {
-    return this.date.split(".").reverse().join("-")
+    return this.date.split('.').reverse().join('-')
 })
 
 //Model
 const tasksModel: Model<TaskModel> = model<TaskModel>('Tasks', TasksSchema)
+
+//Change Streams
+tasksModel.watch().on('change', data => console.log(data))
 
 export default tasksModel

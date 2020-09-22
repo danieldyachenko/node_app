@@ -1,57 +1,55 @@
-import tasksModel from '../models/taskModel'
+import taskModel from '../models/taskModel'
 import { Controller, Task } from '../types/list';
 
 export default class ListController {
 
     getList: Controller = async (req, res) => {
-        const tasks = await tasksModel.find()
-        res.send(tasks)
+        const taskDocument = await taskModel.find()
+        res.send(taskDocument)
     }
 
     getTask: Controller = (req, res) => {
-        tasksModel.findOne({_id: req.params.id}, (err, task) => {
+        taskModel.findOne({ _id: req.params.id }, (err, task) => {
             if (err) console.log(err)
             res.send(task);
         })
     }
 
     addTask: Controller = async (req, res) => {
-        const tasks = new tasksModel({
+        const taskDocument = new taskModel({
             text: req.body.text,
             isPerformed: req.body.isPerformed,
             isTagged: req.body.isTagged,
             date: req.body.date
         })
 
-        await tasks.save(err => {
+        await taskDocument.save(err => {
             if (err) console.log(err);
-            res.send(tasks)
+            res.send(taskDocument)
         })
 
         //virtual property
-        console.log(tasks.universalDateFormat)
+        console.log(taskDocument.universalDateFormat)
     }
-    
+
     deleteTask: Controller = (req, res) => {
         const id = req.params.id
-        tasksModel.findByIdAndDelete(id, (err, tasks) => {
+        taskModel.findByIdAndDelete(id, (err, tasks) => {
             if (err) console.log(err)
             res.send(tasks)
         })
     }
-    
-    updateTask: Controller = (req, res) => {
-        if (!req.body) return res.sendStatus(400)
-        const newTask: Task = {
-            text: req.body.text,
-            isPerformed: req.body.isPerformed,
-            isTagged: req.body.isTagged,
-            date: req.body.date
+
+    updateTask: Controller = async (req, res) => {
+        try {
+            if (!req.body) return res.sendStatus(400)
+            const taskDocument = await taskModel.findById(req.body.id)
+            await taskDocument?.updateOne({_id: req.body.id}, Object.assign(taskDocument, req.body))
+            res.send(taskDocument);
+        } catch (e) {
+            console.log(e)
         }
-        tasksModel.findByIdAndUpdate(req.body.id, newTask, {new: true}, (err, task) => {
-            if (err) console.log(err);
-            res.send(task);
-        })
+
     }
 }
 
