@@ -1,5 +1,5 @@
 import mongoose, { ConnectionOptions } from "mongoose"
-import express, {Express} from 'express'
+import express, { Express } from 'express'
 import listRoutes from './routes/listRouter'
 
 const PORT: string | number = process.env.PORT || 3000
@@ -14,17 +14,7 @@ const options: ConnectionOptions = {
     useNewUrlParser: true
 }
 
-const start = async () => {
-    try {
-        await mongoose.connect(URIS, options)
-
-        app.listen(PORT, () => {
-            console.log('Server has been started...')
-        })
-
-    } catch (err) {
-        console.log(err)
-    }
-}
-
-start()
+mongoose.connect(URIS, options).then(
+    () => app.listen(PORT, () => console.log('Server has been started...')),
+    err => console.log(err)
+)
