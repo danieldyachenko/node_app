@@ -1,20 +1,22 @@
-import mongoose, { ConnectionOptions } from "mongoose"
-import express, { Express } from 'express'
-import listRoutes from './routes/listRouter'
+import mongoose, { ConnectionOptions } from 'mongoose';
+import express, { Express } from 'express';
+import listRouter from './routes/listRouter';
 
-const PORT: string | number = process.env.PORT || 3000
-const URIS: string = 'mongodb+srv://danieldyachenko:sv_Virus93@cluster0.a64g2.mongodb.net/taskList?retryWrites=true&w=majority'
+const PORT = process.env.PORT || 3000;
+const URIS =
+  'mongodb+srv://danieldyachenko:sv_Virus93@cluster0.a64g2.mongodb.net/taskList?retryWrites=true&w=majority';
 
-const app: Express = express()
+const app: Express = express();
 
-app.use('/api', listRoutes)
+app.use('/api', listRouter);
 
 const options: ConnectionOptions = {
-    useUnifiedTopology: true,
-    useNewUrlParser: true
-}
+  useUnifiedTopology: true,
+  useNewUrlParser: true,
+  useFindAndModify: false,
+};
 
 mongoose.connect(URIS, options).then(
-    () => app.listen(PORT, () => console.log('Server has been started...')),
-    err => console.log(err)
-)
+  () => app.listen(PORT, () => console.log('Server has been started...')),
+  err => console.error(err)
+);

@@ -1,54 +1,37 @@
-import taskModel from '../models/taskModel'
-import { Controller, TaskModel } from '../types/list';
+import TaskModel from '../models/taskModel';
+import { Handler, ITaskModel, Task } from '../types/listTypes';
+import listService from '../services/listService';
 
-export default class ListController {
+class ListController {
+  getList: Handler = async (req, res) => {
+    const list = await listService.getList();
+    return res.type('json').send(list);
+  };
 
-    getList: Controller = async (req, res) => {
-        const taskDocument = await taskModel.find()
-        res.send(taskDocument)
-    }
+  getTask: Handler = async (req, res) => {
+    const task = await listService.getTask(req.params.id);
+    return res.type('json').send(task);
+  };
 
-    getTask: Controller = (req, res) => {
-        taskModel.findOne({ _id: req.params.id }, (err, task) => {
-            if (err) console.log(err)
-            res.send(task);
-        })
-    }
+  addTask: Handler = async (req, res) => {
+    const task: Task = req.body;
+    const taskDocument: ITaskModel = new TaskModel(task);
+    const addedTask = await listService.addTask(taskDocument);
+    res.type('json').send(addedTask);
+  };
 
-    addTask: Controller = async (req, res) => {
-        const taskDocument = new taskModel({
-            text: req.body.text,
-            isPerformed: req.body.isPerformed,
-            isTagged: req.body.isTagged,
-            date: req.body.date
-        })
+  deleteTask: Handler = async (req, res) => {
+    const deletedTask = await listService.deleteTask(req.params.id);
+    res.send(deletedTask);
+  };
 
-        await taskDocument.save(err => {
-            if (err) console.log(err);
-            res.send(taskDocument)
-        })
-
-        //validate
-        //taskDocument.validate(error => assert(error.errors['text'].message, 'is not a valid text'))
-    }
-
-    deleteTask: Controller = (req, res) => {
-        const id = req.params.id
-        taskModel.findByIdAndDelete(id, (err, tasks) => {
-            if (err) console.log(err)
-            res.send(tasks)
-        })
-    }
-
-    updateTask: Controller = async (req, res) => {
-        try {
-            if (!req.body) return res.sendStatus(400)
-            const taskDocument: TaskModel | null = await taskModel.findById(req.body.id)
-            await taskDocument?.updateOne({_id: req.body.id}, Object.assign(taskDocument, req.body))
-            res.send(taskDocument);
-        } catch (e) {
-            console.log(e)
-        }
-    }
+  updateTask: Handler = async (req, res) => {
+    const task: Partial<Task> = req.body;
+    const updatedTask = await listService.updateTask(task);
+    res.send(updatedTask);
+  };
 }
 
+const listController = new ListController();
+
+export default listController;

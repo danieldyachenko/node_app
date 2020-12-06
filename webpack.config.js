@@ -1,35 +1,43 @@
-const path = require("path")
+const path = require('path');
 const nodeExternals = require('webpack-node-externals');
-const WebpackShellPlugin = require('webpack-shell-plugin');
+const WebpackShellPluginNext = require('webpack-shell-plugin-next');
+const ESLintPlugin = require('eslint-webpack-plugin');
 
-module.exports = {
-    mode: 'development',
+module.exports = (_, argv) => {
+  const isProductionMode = argv.mode === 'production';
+  return {
+    mode: isProductionMode ? 'production' : 'development',
     target: 'node',
-    watch: true,
     externals: [nodeExternals()],
     entry: {
-        index: './src/index.ts'
+      index: './src/index.ts',
     },
     output: {
-        path: path.resolve(__dirname, 'build'),
-        filename: '[name].js',
+      path: path.resolve(__dirname, 'build'),
+      filename: '[name].js',
     },
     resolve: {
-        extensions: ['.ts', '.js', '.json'] // Расширения, которые используются
+      extensions: ['.ts', '.js', '.json'], // Расширения, которые используются
     },
-    devtool: 'inline-source-map',
+    devtool: isProductionMode ? false : 'inline-source-map',
     module: {
-        rules: [
-            {
-                test: /\.ts$/,
-                exclude: /node_modules/,
-                use: ["ts-loader"]
-            },
-        ]
+      rules: [
+        {
+          test: /\.(js|ts)$/,
+          exclude: /node_modules/,
+          use: ['babel-loader'],
+        },
+      ],
     },
     plugins: [
-        new WebpackShellPlugin({
-            onBuildEnd: ['yarn run:dev']
-        })
-    ]
+      new WebpackShellPluginNext({
+        onBuildEnd: {
+          scripts: ['npm run-script run'],
+        },
+      }),
+      new ESLintPlugin({
+        extensions: ['ts', 'js'],
+      }),
+    ],
+  };
 };
